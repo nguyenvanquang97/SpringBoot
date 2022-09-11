@@ -1,7 +1,6 @@
-package com.example.demo.repository;
+package com.example.persondemo.repositoty;
 
-
-import com.example.demo.model.Person;
+import com.example.persondemo.model.Person;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Repository;

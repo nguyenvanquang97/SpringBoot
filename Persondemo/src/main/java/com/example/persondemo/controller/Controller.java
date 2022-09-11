@@ -1,8 +1,8 @@
-package com.example.demo.controller;
+package com.example.persondemo.controller;
 
-import com.example.demo.model.Person;
-import com.example.demo.repository.PersonRepository;
-import com.example.demo.service.Service;
+import com.example.persondemo.model.Person;
+import com.example.persondemo.repositoty.PersonRepository;
+import com.example.persondemo.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -37,9 +34,9 @@ public class Controller {
 
     @GetMapping("/people")
     public ArrayList<Person> sortPersonList(@RequestParam String sort, @RequestParam String direction){
-           if (sort.equals("name")){
-               service.sortByName(allPerson,direction);
-           }
+        if (sort.equals("name")){
+            service.sortByName(allPerson,direction);
+        }
         if (sort.equals("nationality")){
             service.sortByNationality(allPerson,direction);
         }  if (sort.equals("age")){
@@ -58,12 +55,13 @@ public class Controller {
     }
     @GetMapping("/sortMapNationality")
     public HashMap<String,Long> showMapNationality(@RequestParam String direction){
-            HashMap<String,Long> sortMap=new HashMap<>();
-            List<Map.Entry<String,Long>> list= service.sortNationalityList(hashMap,direction);
-            for(Map.Entry<String,Long> m:list){
-                sortMap.put(m.getKey(), m.getValue());
-            }
-        return sortMap;
+        List<Map.Entry<String,Long>> list=service.sortNationalityList(hashMap,direction);
+        Map.Entry<String, Long>[] listEntries;
+        LinkedHashMap<String, Long> sortedMap = new LinkedHashMap<>(list.size());
+        for (Map.Entry<String, Long> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.persondemo.model;
 
 public class Person {
     private String name;
