@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        .codeToClipboardHeader{background-color:#fff;border:1px solid #e0e0e0;border-bottom:0;text-align:left;padding:3px}
+        .copyTextButton{color:#000!important;font-size:18px;padding:4px 10px; background-color: #63b175;border-right:1px solid #e0e0e0;text-decoration:none}
+        .copyTextButton:before{margin:0 5px 0 0;font-size:16px;content:'\f0c5';font-family:fontawesome}
+        pre.codeToClipboard{background: #f9e0df;max-height:500px;font-size:14px;color:#000;overflow:auto;border:1px solid #d3d6db;margin:auto;padding:10px 8px}
+
+        h2{
+            margin-top:  30px;margin-bottom: 30px ;
+            color: #63b175;
+        }
+        h1{
+            margin-top:  50px;
+        }
+
+    </style>
+</head>
+<body>
+<div  class="container" style="background-color: #ffffff;box-shadow: 0 4px 4px rgb(0 0 0 / 15%); " >
+    <h1><b>Working With Arrays in </b> Thymeleaf</h1>
+    <h2>1. Sơ lược
+    </h2>
+    <p>
+        Trong hướng dẫn nhanh này, chúng ta sẽ xem cách chúng ta có thể sử dụng các mảng trong Thymeleaf. Để dễ dàng thiết lập, chúng tôi sẽ sử dụng trình khởi động spring-boot để khởi động ứng dụng của chúng tôi.
+    </p>
+    <p>Thông tin cơ bản về Spring MVC và Thymeleaf có thể được tìm thấy <a href="https://www.baeldung.com/thymeleaf-in-spring-mvc">tại đây</a>.</p>
+    <h2>2. Thymeleaf Dependency</h2>
+    <p>Trong tệp pom.xml của chúng tôi , các dependency duy nhất mà chúng tôi cần thêm là SpringMVC và Thymeleaf:</p>
+
+    <div class="codeToClipboardHeader"><a class="copyTextButton" data-clipboard-target="#content1" href="#null" title="Copy to clipboard">Copy</a></div>
+    <pre class="codeToClipboard" id="content1">
+    <code class="language-xml hljs"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-thymeleaf<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+    
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code>
+     
+</pre>
+
+    <h2>3. The Controller</h2>
+    <p>Để đơn giản, hãy sử dụng controller chỉ có một phương thức xử lý các yêu cầu GET .</p>
+    <p>Điều này phản hồi bằng cách truyền một mảng cho model object sẽ làm cho nó có thể truy cập được vào dạng view:</p>
+    <pre class="codeToClipboard" >
+    <code class="language-java hljs"><span class="hljs-meta">@Controller</span>
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ThymeleafArrayController</span> {
+        
+            <span class="hljs-meta">@GetMapping("/arrays")</span>
+            <span class="hljs-keyword">public</span> String <span class="hljs-title function_">arrayController</span><span class="hljs-params">(Model model)</span> {
+                String[] continents = {
+                  <span class="hljs-string">"Africa"</span>, <span class="hljs-string">"Antarctica"</span>, <span class="hljs-string">"Asia"</span>, <span class="hljs-string">"Australia"</span>, 
+                  <span class="hljs-string">"Europe"</span>, <span class="hljs-string">"North America"</span>, <span class="hljs-string">"Sourth America"</span>
+                };
+                
+                model.addAttribute(<span class="hljs-string">"continents"</span>, continents);
+        
+                <span class="hljs-keyword">return</span> <span class="hljs-string">"continents"</span>;
+            }
+        }</code>
+</pre>
+    <h2>4. The View</h2>
+    <p>Trong trang view, chúng ta sẽ truy cập các continents mảng bằng tên mà chúng ta chuyển nó với (continents) từ controller của chúng ta ở trên .</p>
+
+    <h2>
+        4.1. Thuộc tính và chỉ mục
+    </h2>
+    <p>Một trong những thuộc tính đầu tiên mà chúng ta sẽ kiểm tra là độ dài của mảng. Đây là cách chúng tôi có thể kiểm tra nó:</p>
+    <pre class="codeToClipboard">
+    <code class="language-html hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>...<span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continents.length}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></code>
+</pre>
+    <p>Và nhìn vào đoạn mã ở trên, từ trang view, chúng ta sẽ thấy việc sử dụng từ khóa th: text . Chúng tôi đã sử dụng nó để in giá trị của biến bên trong dấu ngoặc nhọn, trong trường hợp này là độ dài của mảng.</p>
+    <p>
+        Do đó,<b> chúng tôi truy cập giá trị của từng phần tử của mảng continents bằng chỉ mục của nó giống như chúng tôi sử dụng để làm trong mã Java thông thường của chúng tôi </b>:
+    </p>
+    <pre class="codeToClipboard">
+    <code class="language-xml hljs"><span class="hljs-tag">&lt;<span class="hljs-name">ol</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continents[2]}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continents[0]}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continents[4]}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continents[5]}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continents[6]}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continents[3]}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continents[1]}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ol</span>&gt;</span></code>
+</pre>
+    <p>Như chúng ta đã thấy trong đoạn mã trên, mỗi phần tử đều có thể truy cập được thông qua chỉ mục của nó. Chúng ta có thể vào <a href="https://www.baeldung.com/spring-thymeleaf-3-expressions">đây</a> để tìm hiểu thêm về các biểu thức trong Thymeleaf .</p>
+    <p></p>
+    <h2>
+        4.2. Sự lặp lại
+    </h2>
+    <p>Tương tự,<b>chúng ta có thể lặp lại tuần tự các phần tử của mảng .</b>
+
+        Trong Thymeleaf, đây là cách chúng tôi có thể đạt được điều đó:</p>
+    <pre class="codeToClipboard" >
+        <code class="language-html hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">th:each</span>=<span class="hljs-string">"continet : ${continents}"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continent}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code>
+    </pre>
+    <p>Khi sử dụng <b> th: mỗi từ khóa để lặp qua phần tử của một mảng</b> , chúng tôi không bị hạn chế chỉ sử dụng các thẻ danh sách. Chúng tôi có thể sử dụng bất kỳ thẻ HTML nào có khả năng hiển thị văn bản trên trang. Ví dụ:</p>
+    <pre class="codeToClipboard" >
+        <code class="language-html hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h4</span> <span class="hljs-attr">th:each</span>=<span class="hljs-string">"continent : ${continents}"</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${continent}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span></code>
+    </pre>
+    <p> <em>Trong đoạn mã trên, mỗi phần tử sẽ được hiển thị trên thẻ &lt;h4&gt;&lt;/h4&gt;</em>  riêng biệt của nó .</p>
+    <h2>
+        4.3. Các chức năng tiện ích
+    </h2>
+    <p>Cuối cùng, chúng ta sẽ sử dụng các hàm của lớp tiện ích để kiểm tra một số thuộc tính khác của mảng.
+
+    </p>
+    <p> Chúng ta hãy xem xét điều này:</p>
+    <pre class="codeToClipboard" >
+        <code class="language-html hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>The greatest <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${#arrays.length(continents)}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> continents.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+           
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Europe is a continent: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${#arrays.contains(continents, 'Europe')}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+           
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Array of continents is empty <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">"${#arrays.isEmpty(continents)}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></code>
+       </pre>
+    <p>
+        Trước tiên, chúng tôi truy vấn độ dài của mảng, sau đó kiểm tra xem Châu Âu có phải là một phần tử của các lục địa mảng hay không.
+    </p>
+    <p>Cuối cùng, chúng tôi kiểm tra xem các lục địa  mảng có trống hay không.</p>
+
+    <h2>5. Kết luận</h2>
+    <p>Trong bài viết này, chúng ta đã học cách làm việc với một mảng trong T hymeleaf bằng cách kiểm tra độ dài của nó và truy cập các phần tử của nó bằng cách sử dụng một chỉ mục. Chúng tôi cũng đã học cách lặp lại các phần tử của nó trong Thymeleaf.</p>
+    <p>Cuối cùng, chúng ta đã thấy việc sử dụng các hàm tiện ích để kiểm tra các thuộc tính khác của một mảng.</p>
+    <p>Và, như mọi khi, mã nguồn hoàn chỉnh của bài viết này có thể được tìm thấy trên Github .</p>
+</div>
+</body>
+
+<script src='//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js' type='text/javascript'></script>
+
+<script src='//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js' type='text/javascript'></script>
+
+<script type='text/javascript'>
+    //<![CDATA[
+    $(function(){new Clipboard(".copyTextButton")});
+    //]]></script>
+</html>
