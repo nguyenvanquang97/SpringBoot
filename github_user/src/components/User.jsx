@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./User.css";
+import './Loading'
 function User() {
   const [data, setData] = useState([]);
   const [temp,setTemp]=useState(0);
+  const [loading,setLoading]=useState(true)
   useEffect(() => {
     fetch(`https://api.github.com/users`)
       .then((response) => response.json())
