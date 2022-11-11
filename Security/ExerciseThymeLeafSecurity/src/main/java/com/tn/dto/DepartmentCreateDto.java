@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 
 
-public class departmentCreateDto {
+public class DepartmentCreateDto {
     private String departmentName;
     private Integer managerName;
 }

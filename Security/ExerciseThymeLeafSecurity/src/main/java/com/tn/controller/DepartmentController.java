@@ -12,17 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 @Controller
-public class departmentController {
+public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
-
 
     @GetMapping("home")
     public String trangChu(Model model) {
         List<Department> departments = departmentService.getAll();
-        System.out.println(
-                departments
-        );
         model.addAttribute("listDepartment", departments);
         return "index";
     }
@@ -33,9 +29,8 @@ public class departmentController {
     }
 
     @PostMapping("/department/save")
-    public String save(@ModelAttribute Department product) {
-        System.out.println(product);
-        departmentService.add(product);
+    public String save(@ModelAttribute Department department) {
+        departmentService.add(department);
         return "redirect:/home";
     }
 }
