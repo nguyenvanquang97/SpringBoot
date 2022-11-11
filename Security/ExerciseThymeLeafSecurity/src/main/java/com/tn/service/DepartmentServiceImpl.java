@@ -1,7 +1,7 @@
 package com.tn.service;
 
 
-import com.tn.Repository.DepartmentRepository;
+import com.tn.repository.DepartmentRepository;
 import com.tn.entity.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
