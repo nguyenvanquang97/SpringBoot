@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang chủ</title>
+</head>
+<body>
+    <h1>Trang chủ</h1>
+    <p th:each="obj :${listProduct}">
+ <span th:text="${obj.id}"></span>
+        <span th:text="${obj.productName}">aaaa</span>
+        <span th:text="${obj.productPrice}"></span>
+ <p>
+</body>
+</html>
