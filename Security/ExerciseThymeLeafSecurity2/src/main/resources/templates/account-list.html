@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="index::Heading">
+    <meta charset="UTF-8">
+    <title>Account</title>
+</head>
+<body>
+<h1>Account information</h1>
+<button class="btn btn-primary mx-3"><a th:href="@{/account/add}"  style="color: aliceblue;text-decoration: none">Create Account</a></button>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>User Name</th>
+        <th>Full Name</th>
+        <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="obj :${listAccount}">
+        <td th:text="${obj.id}"></td>
+        <td th:text="${obj.userName}"></td>
+        <td th:text="${obj.fullName}"></td>
+        <td th:text="${obj.role}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

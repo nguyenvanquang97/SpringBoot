@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="index::Heading">
+</head>
+<body>
+<div class="container" style="margin-top: 50px">
+  <form th:action="${'/account/save'}" method="post">
+    <p>User Name:</p>
+    <input type="text" class="form-control" aria-label="Text input with dropdown button" name ="userName"/>
+    <p>Password:</p>
+    <input type="text" class="form-control" aria-label="Text input with dropdown button" name ="password"/>
+    <p>Full Name:</p>
+    <input type="text" class="form-control" aria-label="Text input with dropdown button" name ="fullName"/>
+    <p>Role:</p>
+    <select name="role" id="role" >
+      <option th:value="'EMPLOYEE'" th:text="EMPLOYEE"></option>
+      <option th:value="'ADMIN'" th:text="ADMIN"></option>
+    </select>
+    <br>
+    <br>
+    <input type ="submit" value="Submit"/>
+  </form>
+</div>
+</body>
+</html>
