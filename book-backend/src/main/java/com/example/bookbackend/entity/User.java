@@ -54,5 +54,14 @@ public class User {
     @JsonIgnore
     private Set<Comment> comments = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<OrderItem> orderItems = new LinkedHashSet<>();
 
+
+
+    @PreRemove
+    public void preRemove() {
+        this.setAvatar(null);
+    }
 }

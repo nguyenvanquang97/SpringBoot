@@ -29,13 +29,13 @@ public class WebService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public List<Book> getBooks(String search, String category) {
+    public List<Book> getBooks(String search, String category,Integer page) {
         log.info("search {}", search);
         log.info("category {}", category);
-//        if (page==null){
-//            page=0;
-//        }
-        return bookRepository.findByTitleContainsIgnoreCaseAndCategories_NameIgnoreCase(search, category);
+        if (page==null){
+            page=1;
+        }
+        return bookRepository.findByTitleContainsIgnoreCaseAndCategories_NameIgnoreCase(search, category,PageRequest.of(page-1, 12));
     }
 
     public Book getBookById(Integer id) {
@@ -55,6 +55,6 @@ public class WebService {
     }
 
     public List<Comment> getCommentByBookId(Integer bookId) {
-        return commentRepository.findByBook_Id(bookId);
+        return commentRepository.findByBook_IdOrderByCreatedAtDesc(bookId);
     }
 }

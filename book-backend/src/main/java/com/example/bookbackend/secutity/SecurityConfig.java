@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**", "/api/v1/**").permitAll() // Cho phép ai cũng có thể đi qua
                 .antMatchers("/api/admin/**").hasRole("ADMIN") // Cần quyền admin mới được đi qua
+                .antMatchers("/api/user/**").hasRole("USER")
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPointCustom) // Xử lý lỗi authentication

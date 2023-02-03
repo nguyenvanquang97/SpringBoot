@@ -19,6 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "book")
+
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,8 +40,6 @@ public class Book {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-
 
     @Column(name = "page_numbers")
     private Integer pageNumbers;
@@ -66,6 +65,10 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "categories_id"))
     private Set<Category> categories = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<OrderItem> orderItems = new LinkedHashSet<>();
 
     @PrePersist
     public void prePersist() {

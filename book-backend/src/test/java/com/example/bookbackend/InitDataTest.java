@@ -1,7 +1,9 @@
 package com.example.bookbackend;
 
 import com.example.bookbackend.entity.*;
+import com.example.bookbackend.exception.NotFoundException;
 import com.example.bookbackend.repository.*;
+import com.example.bookbackend.service.FileService;
 import com.github.javafaker.Faker;
 import com.github.slugify.Slugify;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,9 @@ public class InitDataTest {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private FileService fileService;
 
     @Autowired
     private Faker faker;
@@ -57,28 +62,65 @@ public class InitDataTest {
             "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/127/9780241379127.jpg",
             "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/579/9780712670579.jpg",
             "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/720/9781786892720.jpg",
-            "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/185/9789385986185.jpg",
             "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/266/9789387779266.jpg",
             "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/194/9781612680194.jpg",
             "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/294/9789391924294.jpg",
-            "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/357/9789354600357.jpg"
-};
+            "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/357/9789354600357.jpg",
+            "https://product.hstatic.net/1000363117/product/image_195509_1_30207_d049ec32586948cc85a84cfb5dcd1df8_master.jpg",
+            "https://product.hstatic.net/1000363117/product/image_89545_148dc1a847e74ab2b1894a71c424ded8_master.jpg",
+            "https://product.hstatic.net/1000363117/product/image_180747_ac752a060ff74a4cbc58a02593ee5ffc_master.jpg",
+            "https://product.hstatic.net/1000363117/product/7_hanh_trinh_tri_tue_80a251dc072c474a93707c206d2a8c93_master.png",
+            "https://product.hstatic.net/1000363117/product/7_hanh_trinh_tri_tue_80a251dc072c474a93707c206d2a8c93_master.png",
+            "https://product.hstatic.net/1000363117/product/2020_04_07_14_50_16_1-390x510_07e901bf3b994e1c9965023df727eb0f_master.jpg",
+            "https://product.hstatic.net/1000363117/product/ly_do_hanh_phuc_2a4f70449c1844a181929806e6e79163_master.png",
+            "https://product.hstatic.net/1000363117/product/tuong_tac_lat_mo_-_cac_tu_trai_nghia_-_opposites_9ab4ce6196b046ad844d12a72c3a4252_master.jpg",
+            "https://product.hstatic.net/1000363117/product/image_187319_a566274994de4dd68fdb2b3e4ed42688_master.jpg",
+            "https://product.hstatic.net/1000363117/product/se-co-cach-dung-lo_1_668d017544bd447d87610a2075fc3f9e_master.jpg",
+            "https://product.hstatic.net/1000363117/product/do_be_o_sau_la_gi__trang_phuc_3ef902810911474988b9d9cdc19f70e0_master.png"
+    };
+    private  String[] avatar={"https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-4.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-3.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-2.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-5.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-6.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-7.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-8.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-9.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-10.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-11.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-12.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-13.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-14.jpg",
+            "https://thao68.com/wp-content/uploads/2022/03/avatar-facebook-15.jpg"
+
+    };
 
     @Test
     void save_user() {
-        for (int i = 0; i < 3; i++) {
+        Random rd=new Random();
+        User user1 = User.builder()
+                .name(faker.name().fullName())
+                .email("admin")
+                .password(passwordEncoder.encode("111"))
+                .avatar(avatar[rd.nextInt(avatar.length)])
+                .roles(List.of("USER", "ADMIN"))
+                .build();
+        userRepository.save(user1);
+        for (int i = 0; i < 10; i++) {
             User user = User.builder()
                     .name(faker.name().fullName())
                     .email(faker.internet().emailAddress())
+                    .avatar(avatar[rd.nextInt(avatar.length)])
                     .password(passwordEncoder.encode("111"))
                     .roles(List.of("USER", "ADMIN"))
                     .build();
             userRepository.save(user);
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 30; i++) {
             User user = User.builder()
                     .name(faker.name().fullName())
                     .email(faker.internet().emailAddress())
+                    .avatar(avatar[rd.nextInt(avatar.length)])
                     .password(passwordEncoder.encode("111"))
                     .roles(List.of("USER"))
                     .build();
@@ -88,9 +130,12 @@ public class InitDataTest {
 
     @Test
     void save_category() {
-        for (int i = 0; i < 5; i++) {
+
+        String[] categories={"Tình cảm","Trinh thám","Thiếu nhi",
+        "Kinh doanh","Tâm lý","Tiên Hiệp","Huyền huyễn","Lịch sử-quân sự"};
+        for (int i = 0; i < 8; i++) {
             Category category = Category.builder()
-                    .name(faker.book().genre())
+                    .name(categories[i])
                     .build();
             categoryRepository.save(category);
         }
@@ -98,6 +143,10 @@ public class InitDataTest {
 
     @Test
     void save_author() {
+        Author author1 = Author.builder()
+                .name("A Quang")
+                .build();
+        authorRepository.save(author1);
         for (int i = 0; i < 10; i++) {
             Author author = Author.builder()
                     .name(faker.name().fullName())
@@ -108,8 +157,7 @@ public class InitDataTest {
 
     @Test
     void save_book() {
-        Random rd = new Random();
-
+        Random rd=new Random();
         List<User> users = userRepository.findAll();
         List<User> usersHasRoleAdmin = users.stream()
                 .filter(user -> user.getRoles().contains("ADMIN"))
@@ -119,7 +167,7 @@ public class InitDataTest {
 
         List<Author> authors=authorRepository.findAll();
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 108; i++) {
             // Random 1 user
             User rdUser = usersHasRoleAdmin.get(rd.nextInt(usersHasRoleAdmin.size()));
 
@@ -161,13 +209,24 @@ public class InitDataTest {
         List<User> users = userRepository.findAll();
         List<Book> books = bookRepository.findAll();
 
-        for (int i = 0; i < 150; i++) {
+        for (int i = 0; i < 600; i++) {
             // Random 1 user
             User rdUser = users.get(rd.nextInt(users.size()));
 
             // Random 1 book
             Book rdBook = books.get(rd.nextInt(books.size()));
-            List<String> commentContent=List.of("Sách rất hay!","Tuyệt vời!","Xứng đáng giá tiền","Bao giờ mới có phần tiếp đây?");
+            List<String> commentContent=List.of("Tôi rất thích quyển sách này, nội dung cực kỳ hấp dẫn và tạo cảm hứng",
+                    "Cảm giác đọc sách này giống như tôi đang đắm mình trong một thế giới mới, tác giả viết rất hay",
+                    "Tôi thấy nhân vật chính rất đáng yêu và mối tình của họ đã làm tôi nấp nặng trong suốt quá trình đọc.",
+                    "Các tình tiết của sách đã làm tôi cảm thấy sốc và choáng váng.",
+                    "Tôi rất thích cách tác giả kể câu chuyện, tôi cảm thấy như tôi đang xem một bộ phim",
+                    "Tôi đã học được rất nhiều điều mới từ sách này và tôi sẽ giới thiệu nó cho bạn bè của tôi.",
+                    "Tôi rất thích cách tác giả  sáng tạo và xây dựng cốt truyện hấp dẫn trong quyển sách này.",
+                    "Nội dung trong sách rất gần gũi với cuộc sống hàng ngày và giúp tôi tìm hiểu thêm về mình và xung quanh.",
+                    "Tác giả viết rất sâu sắc về những tình huống và cảm xúc của nhân vật, giúp tôi trải nghiệm sâu sắc hơn vào truyện.",
+                    "Sách có nhiều điều mà tôi chưa biết và rất hữu ích cho sự phát triển của tôi.",
+                    "Tôi khuyên mọi người nên đọc quyển sách này để cảm nhận những gì tác giả muốn truyền đạt.");
+
 
             Comment comment = Comment.builder()
                     .content(commentContent.get(rd.nextInt(commentContent.size())))
@@ -177,9 +236,8 @@ public class InitDataTest {
             commentRepository.save(comment);
         }
     }
-//@Test
-//    public void deleteUser(){
-//        User user=userRepository.findById(1).get();
-//        userRepository.delete(user);
-//}
+    @Test
+    void deleteComment(){
+        commentRepository.deleteAll();
+    }
 }

@@ -13,12 +13,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "image")
-public class Image {
+@Table(name = "image_book")
+public class ImageBook {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Integer id;
+
 
     @Column(name = "uploaded_at")
     private LocalDateTime uploadedAt;
@@ -28,9 +29,8 @@ public class Image {
     private byte[] data;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
+    @JoinColumn(name = "book_id")
+    private Book book;
 
 
     @PrePersist

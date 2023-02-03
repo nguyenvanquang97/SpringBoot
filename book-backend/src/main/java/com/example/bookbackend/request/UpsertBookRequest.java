@@ -11,10 +11,11 @@ import java.util.List;
 public class UpsertBookRequest {
     private String title;
     private String description;
-    private String thumbnail;
-    private Integer pageNumber;
+//    private String thumbnail;
+    private Integer pageNumbers;
     private Integer publishingYear;
     private Long price;
-    private List<Integer> authorsIds;//danh sach id cua author
+    private String thumbnail;
+    private List<Integer> authorIds;//danh sach id cua author
     private List<Integer> categoryIds; // danh sách id của category
 }

@@ -3,6 +3,7 @@ package com.example.bookbackend.service;
 import com.example.bookbackend.entity.Author;
 import com.example.bookbackend.entity.Book;
 import com.example.bookbackend.entity.Category;
+import com.example.bookbackend.entity.User;
 import com.example.bookbackend.exception.NotFoundException;
 import com.example.bookbackend.repository.AuthorRepository;
 import com.example.bookbackend.repository.BookRepository;
@@ -11,7 +12,9 @@ import com.example.bookbackend.request.UpsertBookRequest;
 import com.github.slugify.Slugify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 
@@ -29,8 +32,11 @@ public class BookService {
     @Autowired
     private Slugify slugify;
 
+    @Autowired
+    private FileService fileService;
+
     public List<Book> getBooks() {
-        return bookRepository.findAll();
+        return bookRepository.findByOrderByCreatedAtDesc();
     }
 
     public Book getBookById(Integer id) {
@@ -43,16 +49,16 @@ public class BookService {
         // Lấy ra ds category tương ứng (từ ds id gửi lên)
         Set<Category> categories = categoryRepository.findByIdIn(request.getCategoryIds());
         // Lấy ra ds author tương ứng (từ ds id gửi lên)
-        Set<Author> authors = authorRepository.findByIdIn(request.getAuthorsIds());
+        Set<Author> authors = authorRepository.findByIdIn(request.getAuthorIds());
         //tao book
         Book book=Book.builder()
                 .title(request.getTitle())
                 .slug(slugify.slugify(request.getTitle()))
                 .description(request.getDescription())
-                .thumbnail(request.getThumbnail())
                 .categories(categories)
                 .authors(authors)
-                .pageNumbers(request.getPageNumber())
+                .thumbnail(request.getThumbnail())
+                .pageNumbers(request.getPageNumbers())
                 .publishingYear(request.getPublishingYear())
                 .price(request.getPrice())
                 .build();
@@ -67,16 +73,15 @@ public class BookService {
         // Lấy ra ds category tương ứng (từ ds id gửi lên)
         Set<Category> categories = categoryRepository.findByIdIn(request.getCategoryIds());
         // Lấy ra ds category tương ứng (từ ds id gửi lên)
-        Set<Author> authors = authorRepository.findByIdIn(request.getAuthorsIds());
+        Set<Author> authors = authorRepository.findByIdIn(request.getAuthorIds());
 
         book.setTitle(request.getTitle());
         book.setSlug(slugify.slugify(request.getTitle()));
         book.setDescription(request.getDescription());
-        book.setThumbnail(request.getThumbnail());
         book.setCategories(categories);
         book.setAuthors(authors);
         book.setPrice(request.getPrice());
-        book.setPageNumbers(request.getPageNumber());
+        book.setPageNumbers(request.getPageNumbers());
         book.setPublishingYear(request.getPublishingYear());
 
         return bookRepository.save(book);
@@ -86,6 +91,41 @@ public class BookService {
         Book book = bookRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException("Not found book with id = " + id);
         });
+        String img=book.getThumbnail();
+        if (img!=null&&img.contains("localhost:8080")){
+            int index=img.lastIndexOf("/");
+             String fileId= img.substring(index+1);
+//            fileService.deleteFile(fileId-'0');
+            deleteFile(id,Integer.parseInt(fileId));
+        }
         bookRepository.delete(book);
+    }
+
+    //upload thumbnail
+    public String uploadThumbnail(Integer id, MultipartFile file) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not found book with id = " + id);
+        });
+
+        String filePath = fileService.uploadThumbnail(book, file);
+        book.setThumbnail(filePath);
+        bookRepository.save(book);
+
+        return filePath;
+    }
+
+    // Đọc file
+    public byte[] readThumbnail(Integer id, Integer fileId) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not found book with id = " + id);
+        });
+        return fileService.readThumbnail(fileId);
+    }
+    // Xóa file
+    public void deleteFile(Integer id, Integer fileId) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not found user with id = " + id);
+        });
+        fileService.deleteThumbnail(fileId);
     }
 }

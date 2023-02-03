@@ -2,9 +2,13 @@ package com.example.bookbackend.controller;
 
 import com.example.bookbackend.entity.Book;
 import com.example.bookbackend.request.UpsertBookRequest;
+import com.example.bookbackend.response.UpdateAvatarResponse;
+import com.example.bookbackend.response.UpdateThumbnailResponse;
 import com.example.bookbackend.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -42,4 +46,11 @@ public class BookController {
     public void deleteBook(@PathVariable Integer id) {
         bookService.deleteBook(id);
     }
+
+    // Upload thumbnail
+    @PostMapping("/books/{id}/update-thumbnail")
+    public UpdateThumbnailResponse uploadThumbnail(@PathVariable Integer id, @ModelAttribute("file") MultipartFile file) {
+        return new UpdateThumbnailResponse(bookService.uploadThumbnail(id, file));
+    }
+
 }
