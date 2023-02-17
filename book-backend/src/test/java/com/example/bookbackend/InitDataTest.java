@@ -116,7 +116,7 @@ public class InitDataTest {
                     .build();
             userRepository.save(user);
         }
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 10; i++) {
             User user = User.builder()
                     .name(faker.name().fullName())
                     .email(faker.internet().emailAddress())
@@ -132,7 +132,7 @@ public class InitDataTest {
     void save_category() {
 
         String[] categories={"Tình cảm","Trinh thám","Thiếu nhi",
-        "Kinh doanh","Tâm lý","Tiên Hiệp","Huyền huyễn","Lịch sử-quân sự"};
+        "Kinh doanh","Tâm lý","Tiên Hiệp","Lịch sử-quân sự"};
         for (int i = 0; i < 8; i++) {
             Category category = Category.builder()
                     .name(categories[i])
@@ -167,7 +167,7 @@ public class InitDataTest {
 
         List<Author> authors=authorRepository.findAll();
 
-        for (int i = 0; i < 108; i++) {
+        for (int i = 0; i < 120; i++) {
             // Random 1 user
             User rdUser = usersHasRoleAdmin.get(rd.nextInt(usersHasRoleAdmin.size()));
 

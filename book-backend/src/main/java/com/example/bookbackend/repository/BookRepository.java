@@ -2,6 +2,7 @@ package com.example.bookbackend.repository;
 
 import com.example.bookbackend.entity.Book;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,9 +19,9 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             group by b.id
             order by b.createdAt desc 
             """)
-    List<Book> findByTitleContainsIgnoreCaseAndCategories_NameIgnoreCase(@Param("term") String term, @Param("categoryName") String categoryName, Pageable pageable);
+    Page<Book> findByTitleContainsIgnoreCaseAndCategories_NameIgnoreCase(@Param("term") String term, @Param("categoryName") String categoryName, Pageable pageable);
 
-    List<Book> findByOrderByCreatedAtDesc();
+    Page<Book> findByOrderByCreatedAtDesc(Pageable pageable);
 
 
     List<Book> findByAuthors_IdIn(Collection<Integer> ids);

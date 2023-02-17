@@ -10,6 +10,7 @@ import com.example.bookbackend.service.FileService;
 import com.example.bookbackend.service.UserService;
 import com.example.bookbackend.service.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class WebController {
     @Autowired
     private BookService bookService;
     @GetMapping("/books")
-    public List<Book> getBooks(@RequestParam(required = false) String search,
+    public Page<Book> getBooks(@RequestParam(required = false) String search,
                                @RequestParam(required = false) String category,
                                @RequestParam(required = false)Integer page
 

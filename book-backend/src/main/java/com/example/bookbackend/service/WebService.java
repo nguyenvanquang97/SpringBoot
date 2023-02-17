@@ -10,6 +10,7 @@ import com.example.bookbackend.repository.CategoryRepository;
 import com.example.bookbackend.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class WebService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public List<Book> getBooks(String search, String category,Integer page) {
+    public Page<Book> getBooks(String search, String category, Integer page) {
         log.info("search {}", search);
         log.info("category {}", category);
         if (page==null){

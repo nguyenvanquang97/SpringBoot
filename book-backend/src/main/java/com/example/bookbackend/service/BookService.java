@@ -11,6 +11,8 @@ import com.example.bookbackend.repository.CategoryRepository;
 import com.example.bookbackend.request.UpsertBookRequest;
 import com.github.slugify.Slugify;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,8 +37,11 @@ public class BookService {
     @Autowired
     private FileService fileService;
 
-    public List<Book> getBooks() {
-        return bookRepository.findByOrderByCreatedAtDesc();
+    public Page<Book> getBooks(Integer page) {
+        if (page==null){
+            page=1;
+        }
+        return bookRepository.findByOrderByCreatedAtDesc( PageRequest.of(page-1, 10));
     }
 
     public Book getBookById(Integer id) {

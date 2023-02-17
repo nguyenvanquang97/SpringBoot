@@ -6,6 +6,7 @@ import com.example.bookbackend.response.UpdateAvatarResponse;
 import com.example.bookbackend.response.UpdateThumbnailResponse;
 import com.example.bookbackend.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +20,9 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("books")
-    public List<Book> getBooks() {
-        return bookService.getBooks();
+    public Page<Book> getBooks(@RequestParam(required = false)Integer page) {
+
+        return bookService.getBooks(page);
     }
 
     //2. Lấy chi tiết book
