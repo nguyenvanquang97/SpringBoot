@@ -107,16 +107,22 @@ public class BookService {
     }
 
     //upload thumbnail
-    public String uploadThumbnail(Integer id, MultipartFile file) {
+    public Book uploadThumbnail(Integer id, MultipartFile file) {
         Book book = bookRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException("Not found book with id = " + id);
         });
-
+        String img=book.getThumbnail();
+        if (img!=null&&img.contains("localhost:8080")){
+            int index=img.lastIndexOf("/");
+            String fileId= img.substring(index+1);
+//            fileService.deleteFile(fileId-'0');
+            deleteFile(id,Integer.parseInt(fileId));
+        }
         String filePath = fileService.uploadThumbnail(book, file);
         book.setThumbnail(filePath);
         bookRepository.save(book);
 
-        return filePath;
+        return book;
     }
 
     // Đọc file

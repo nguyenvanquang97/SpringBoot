@@ -51,8 +51,8 @@ public class BookController {
 
     // Upload thumbnail
     @PostMapping("/books/{id}/update-thumbnail")
-    public UpdateThumbnailResponse uploadThumbnail(@PathVariable Integer id, @ModelAttribute("file") MultipartFile file) {
-        return new UpdateThumbnailResponse(bookService.uploadThumbnail(id, file));
+    public Book uploadThumbnail(@PathVariable Integer id, @ModelAttribute("file") MultipartFile file) {
+        return  bookService.uploadThumbnail(id, file);
     }
 
 }

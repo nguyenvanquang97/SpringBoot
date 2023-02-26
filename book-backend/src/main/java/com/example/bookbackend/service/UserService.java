@@ -163,6 +163,9 @@ public class UserService {
         if (!Objects.equals(createAccountRequest.getPassword(), createAccountRequest.getRepeatPassword())){
             throw new BadRequestException("Password and repeat password is not match");
         }
+        if(createAccountRequest.getName().equals("")||createAccountRequest.getEmail().equals("")||createAccountRequest.getPassword().equals("")||createAccountRequest.getRepeatPassword().equals("")){
+            throw new BadRequestException("Không được để trống thông tin");
+        }
         User user = User.builder()
                 .name(createAccountRequest.getName())
                 .email(createAccountRequest.getEmail())
