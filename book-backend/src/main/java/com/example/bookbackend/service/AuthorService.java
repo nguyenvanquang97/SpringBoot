@@ -34,7 +34,7 @@ public class AuthorService {
             throw new BadRequestException("Name is required");
         }
 
-        if (authorRepository.findByName(request.getName())!=null) {
+        if (authorRepository.findByName(request.getName()).isPresent()) {
             throw new BadRequestException("Author is exist");
         }
 
